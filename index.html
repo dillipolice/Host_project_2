@@ -1,0 +1,71 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Number Game</title>
+ <link rel = "stylesheet" href="index.css">
+</head>
+<body>
+    <div class="container">
+        <h1> Guessing Number Game</h1>
+        <p><b>Guess a number between 1 and 100</b></p>
+        <p><b>Start the play</b></p>
+        <div>
+            <input type="number" id="guess-input" placeholder="Enter your guess"><br><br>
+            <button onclick="checkGuess()">check</button>
+        </div>
+        <p id="feedback"></p>
+        <p id="chances"><b>You have 10 chances.</b></p>
+        <div class="button-container" id="but">
+            <button onclick="resetGame()">Restart Game</button>
+        </div>
+    </div>
+    <script>
+    let randomNumber = Math.floor(Math.random() * 100) + 1;
+    let attempts = 0;
+    const maxChances = 10;
+    let isGameActive = true; 
+    
+    function checkGuess() {
+        if (!isGameActive) {
+            return; 
+        }
+    
+        const userGuess = Number(document.getElementById('guess-input').value);
+        attempts++;
+        const feedback = document.getElementById('feedback');
+        const chancesDisplay = document.getElementById('chances');
+        const remainingChances = maxChances - attempts;
+    
+        if (userGuess === randomNumber) {
+            feedback.textContent = `Congratulations! You guessed it in ${attempts} attempts.`;
+            feedback.style.color = 'green';
+            chancesDisplay.textContent = '';
+            isGameActive = false; 
+        } else if (attempts >= maxChances) {
+            feedback.textContent = `Game over! The correct number was ${randomNumber}.`;
+            feedback.style.color = 'red';
+            chancesDisplay.textContent = 'No more chances left!';
+            isGameActive = false; 
+        } else if (userGuess < randomNumber) {
+            feedback.textContent = 'Too low! Try again.';
+            feedback.style.color = 'orange';
+            chancesDisplay.textContent = `You have ${remainingChances} chances left.`;
+        } else {
+            feedback.textContent = 'Too high! Try again.';
+            feedback.style.color = 'orange';
+            chancesDisplay.textContent = `You have ${remainingChances} chances left.`;
+        }
+    }
+    
+    function resetGame() {
+        randomNumber = Math.floor(Math.random() * 100) + 1;
+        attempts = 0;
+        isGameActive = true; // Reset game state
+        document.getElementById('feedback').textContent = '';
+        document.getElementById('chances').textContent = `You have ${maxChances} chances.`;
+        document.getElementById('guess-input').value = '';
+    }
+    </script>
+</body>
+</html>
